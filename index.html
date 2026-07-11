@@ -19,10 +19,45 @@
     --ink: #12203D;
     --muted: #5B6472;
     --gold: #FFD447;
+    --border: #DDE2EA;
     --font-display: 'Oswald', 'Arial Narrow', sans-serif;
     --font-body: 'Inter', -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   }
+
+  body.dark {
+    --paper: #0B1226;
+    --card: #16213E;
+    --ink: #E7EAF2;
+    --muted: #98A2B8;
+    --border: #2A3654;
+  }
+
+  body.dark textarea::placeholder { color: #5B6784; }
+  body.dark .keybox input { color: var(--ink); }
+  body.dark .mode-btn { background: var(--card); border-color: #2A3654; color: var(--ink); }
+  body.dark .mode-btn .num { background: var(--paper); color: var(--ink); }
+  body.dark .mode-btn.active { background: var(--red); border-color: var(--red); color: var(--white); }
+  body.dark .mode-btn.active .num { background: var(--navy); color: var(--white); }
+  body.dark .quiz-count-wrap select { background: var(--paper); color: var(--ink); border-color: var(--border); }
+
+  .theme-toggle {
+    position: fixed;
+    top: 16px; right: 16px;
+    z-index: 30;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    background: rgba(255,255,255,0.08);
+    color: var(--white);
+    font-size: 17px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .theme-toggle:hover { background: rgba(255,255,255,0.18); transform: scale(1.06); }
 
   * { box-sizing: border-box; }
 
@@ -109,7 +144,7 @@
 
   .keybox {
     background: var(--card);
-    border: 1px solid #DDE2EA;
+    border: 1px solid var(--border);
     border-left: 4px solid var(--sky);
     border-radius: 4px;
     padding: 14px 18px;
@@ -125,7 +160,7 @@
   .keybox input {
     flex: 1;
     min-width: 200px;
-    border: 1px solid #DDE2EA;
+    border: 1px solid var(--border);
     border-radius: 3px;
     padding: 7px 10px;
     font-family: var(--font-mono);
@@ -141,7 +176,7 @@
     width: 100%;
     min-height: 220px;
     background: var(--card);
-    border: 1px solid #DDE2EA;
+    border: 1px solid var(--border);
     border-left: 4px solid var(--navy);
     border-radius: 4px;
     padding: 20px;
@@ -292,7 +327,7 @@
   .summary-block {
     position: relative;
     background: var(--card);
-    border: 1px solid #DDE2EA;
+    border: 1px solid var(--border);
     border-radius: 4px;
     padding: 24px 28px;
     font-size: 15px;
@@ -337,7 +372,7 @@
     align-items: center;
     font-size: 14px;
     line-height: 1.45;
-    border: 1px solid #DDE2EA;
+    border: 1px solid var(--border);
   }
 
   .flip-front {
@@ -367,7 +402,7 @@
   .quiz-item {
     position: relative;
     background: var(--card);
-    border: 1px solid #DDE2EA;
+    border: 1px solid var(--border);
     border-radius: 4px;
     padding: 20px 24px;
     margin-bottom: 12px;
@@ -392,7 +427,7 @@
     width: 100%;
     text-align: left;
     background: var(--paper);
-    border: 1px solid #DDE2EA;
+    border: 1px solid var(--border);
     border-radius: 3px;
     padding: 10px 14px;
     margin-bottom: 8px;
@@ -462,6 +497,8 @@
 </head>
 <body>
 
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+
 <header>
   <div class="header-inner">
     <svg class="crest" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Potache crest">
@@ -522,6 +559,23 @@ e.g. &quot;Photosynthesis is the process by which green plants, algae, and some 
 <script>
 let currentMode = 'summary';
 
+const themeToggle = document.getElementById('themeToggle');
+
+function applyTheme(isDark) {
+  document.body.classList.toggle('dark', isDark);
+  themeToggle.textContent = isDark ? '☀️' : '🌙';
+  try { localStorage.setItem('potache-theme', isDark ? 'dark' : 'light'); } catch (e) {}
+}
+
+let savedTheme = null;
+try { savedTheme = localStorage.getItem('potache-theme'); } catch (e) {}
+const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+applyTheme(savedTheme ? savedTheme === 'dark' : prefersDark);
+
+themeToggle.addEventListener('click', () => {
+  applyTheme(!document.body.classList.contains('dark'));
+});
+
 const quizCountWrap = document.getElementById('quizCountWrap');
 const quizCountSelect = document.getElementById('quizCount');
 
@@ -562,7 +616,9 @@ Return ONLY valid JSON, no markdown fences, no preamble, in this exact shape:
 Notes:
 """${notes}"""`,
 
-  quiz: (notes, count) => `You are a study assistant. Create a ${count}-question multiple choice quiz from the following notes. Each question has 4 options with exactly one correct answer, plus a short explanation.
+  quiz: (notes, count) => `You are a study assistant. Create a multiple choice quiz from the following notes.
+Generate EXACTLY ${count} questions — not ${Number(count) + 1}, not ${Math.max(1, Number(count) - 1)}, exactly ${count}. Count them before responding.
+Each question has 4 options with exactly one correct answer, plus a short explanation.
 Return ONLY valid JSON, no markdown fences, no preamble, in this exact shape:
 {"questions": [{"question": "...", "options": ["a","b","c","d"], "correct_index": 0, "explanation": "..."}]}
 
@@ -676,6 +732,10 @@ runBtn.addEventListener('click', async () => {
       ? PROMPTS.quiz(notes, quizCountSelect.value)
       : PROMPTS[currentMode](notes);
     const data = await callModel(prompt, apiKey);
+
+    if (currentMode === 'quiz' && Array.isArray(data.questions)) {
+      data.questions = data.questions.slice(0, Number(quizCountSelect.value));
+    }
 
     if (currentMode === 'summary') renderSummary(data);
     else if (currentMode === 'flashcards') renderFlashcards(data);
