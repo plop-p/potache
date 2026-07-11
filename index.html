@@ -3,17 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Marginalia — AI Study Assistant</title>
+<title>Potache — AI Study Assistant</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120'%3E%3Cdefs%3E%3CclipPath id='c'%3E%3Cpath d='M50,4 L92,18 L92,58 C92,90 74,106 50,116 C26,106 8,90 8,58 L8,18 Z'/%3E%3C/clipPath%3E%3C/defs%3E%3Cpath d='M50,4 L92,18 L92,58 C92,90 74,106 50,116 C26,106 8,90 8,58 L8,18 Z' fill='%230A1A3C' stroke='%23FFFFFF' stroke-width='3'/%3E%3Cg clip-path='url(%23c)'%3E%3Crect x='0' y='82' width='100' height='4' fill='%230091D5'/%3E%3Crect x='0' y='86' width='100' height='34' fill='%23DA1128'/%3E%3C/g%3E%3Ctext x='50' y='19' text-anchor='middle' font-size='13' fill='%23FFD447'%3E%E2%98%85%3C/text%3E%3Ctext x='50' y='72' text-anchor='middle' font-family='Arial, sans-serif' font-weight='700' font-size='42' fill='%23FFFFFF'%3EP%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #22333B;
-    --paper: #FAF6EE;
+    --navy: #0A1A3C;
+    --navy-2: #132C5C;
+    --red: #DA1128;
+    --sky: #0091D5;
+    --white: #FFFFFF;
+    --paper: #F2F4F7;
     --card: #FFFFFF;
-    --green: #29473A;
-    --amber: #C98A3E;
-    --line: #D9CFBB;
-    --muted: #7A7263;
-    --font-display: 'Fraunces', 'Georgia', serif;
+    --ink: #12203D;
+    --muted: #5B6472;
+    --gold: #FFD447;
+    --font-display: 'Oswald', 'Arial Narrow', sans-serif;
     --font-body: 'Inter', -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   }
@@ -25,40 +31,74 @@
     background: var(--paper);
     color: var(--ink);
     font-family: var(--font-body);
-    background-image:
-      repeating-linear-gradient(transparent, transparent 34px, var(--line) 35px);
   }
 
+  /* ---------- Matchday header ---------- */
   header {
-    padding: 48px 24px 24px;
-    max-width: 880px;
-    margin: 0 auto;
-    border-bottom: 2px solid var(--ink);
+    position: relative;
+    background: var(--navy);
+    padding: 44px 24px 34px;
+    text-align: center;
+    overflow: hidden;
+    border-bottom: 5px solid var(--red);
   }
 
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--green);
-    margin-bottom: 8px;
+  /* the Hechter stripe: red-sky-red band running down the center */
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; left: 50%;
+    width: 86px;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg,
+      var(--red) 0%, var(--red) 28%,
+      var(--sky) 28%, var(--sky) 72%,
+      var(--red) 72%, var(--red) 100%);
+    opacity: 0.16;
+  }
+
+  .header-inner {
+    position: relative;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .crest {
+    width: 74px;
+    height: 90px;
+    margin: 0 auto 14px;
+    display: block;
   }
 
   h1 {
     font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 42px;
-    margin: 0 0 8px;
-    letter-spacing: -0.01em;
+    font-weight: 700;
+    font-size: 52px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin: 0 0 10px;
+    color: var(--white);
+  }
+
+  .motto {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--navy);
+    background: var(--gold);
+    padding: 5px 14px;
+    border-radius: 999px;
+    margin-bottom: 16px;
   }
 
   header p {
-    color: var(--muted);
+    color: #C7CEDE;
     font-size: 15px;
-    max-width: 520px;
-    line-height: 1.5;
-    margin: 0;
+    max-width: 480px;
+    line-height: 1.55;
+    margin: 0 auto;
   }
 
   main {
@@ -69,7 +109,8 @@
 
   .keybox {
     background: var(--card);
-    border: 1px solid var(--line);
+    border: 1px solid #DDE2EA;
+    border-left: 4px solid var(--sky);
     border-radius: 4px;
     padding: 14px 18px;
     margin-bottom: 28px;
@@ -84,7 +125,7 @@
   .keybox input {
     flex: 1;
     min-width: 200px;
-    border: 1px solid var(--line);
+    border: 1px solid #DDE2EA;
     border-radius: 3px;
     padding: 7px 10px;
     font-family: var(--font-mono);
@@ -93,14 +134,15 @@
     color: var(--ink);
   }
 
-  .keybox a { color: var(--green); }
+  .keybox a { color: var(--red); font-weight: 600; text-decoration: none; }
+  .keybox a:hover { text-decoration: underline; }
 
   textarea {
     width: 100%;
     min-height: 220px;
     background: var(--card);
-    border: 1px solid var(--line);
-    border-left: 3px solid var(--green);
+    border: 1px solid #DDE2EA;
+    border-left: 4px solid var(--navy);
     border-radius: 4px;
     padding: 20px;
     font-family: var(--font-body);
@@ -110,35 +152,86 @@
     resize: vertical;
   }
 
-  textarea::placeholder { color: #B4AA97; }
+  textarea::placeholder { color: #A6ADB9; }
 
   .modes {
     display: flex;
     gap: 10px;
     margin: 20px 0;
     flex-wrap: wrap;
+    align-items: center;
   }
 
   .mode-btn {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 10px 16px;
-    border: 1px solid var(--ink);
-    background: transparent;
-    color: var(--ink);
-    border-radius: 3px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 9px 16px 9px 10px;
+    border: 2px solid var(--navy);
+    background: var(--white);
+    color: var(--navy);
+    border-radius: 999px;
     cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .mode-btn .num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 13px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--paper);
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.15s ease;
   }
 
-  .mode-btn:hover { background: var(--ink); color: var(--paper); }
+  .mode-btn:hover { border-color: var(--red); }
 
   .mode-btn.active {
-    background: var(--green);
-    border-color: var(--green);
-    color: var(--paper);
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--white);
+  }
+
+  .mode-btn.active .num {
+    background: var(--red);
+    color: var(--white);
+  }
+
+  .quiz-count-wrap {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    padding: 8px 14px;
+    border: 1px dashed #C6CCD6;
+    border-radius: 999px;
+    background: var(--card);
+  }
+
+  .quiz-count-wrap.visible { display: flex; }
+
+  .quiz-count-wrap select {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    background: var(--paper);
+    border: 1px solid var(--navy);
+    border-radius: 3px;
+    padding: 5px 8px;
+    cursor: pointer;
   }
 
   .run-row {
@@ -149,20 +242,23 @@
   }
 
   .run-btn {
-    font-family: var(--font-mono);
-    font-size: 13px;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
     letter-spacing: 0.04em;
-    padding: 13px 28px;
-    background: var(--amber);
+    text-transform: uppercase;
+    padding: 13px 30px;
+    background: var(--red);
     border: none;
-    color: var(--ink);
+    color: var(--white);
     border-radius: 3px;
     cursor: pointer;
-    font-weight: 700;
+    box-shadow: 0 3px 0 #9A0C1C;
   }
 
-  .run-btn:hover { filter: brightness(1.08); }
-  .run-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .run-btn:hover { filter: brightness(1.06); }
+  .run-btn:active { box-shadow: 0 1px 0 #9A0C1C; transform: translateY(2px); }
+  .run-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
   .status {
     font-family: var(--font-mono);
@@ -173,11 +269,12 @@
   #output { margin-top: 36px; }
 
   .section-label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.14em;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--navy);
     margin-bottom: 14px;
     display: flex;
     align-items: center;
@@ -187,19 +284,27 @@
   .section-label::after {
     content: '';
     flex: 1;
-    height: 1px;
-    background: var(--line);
+    height: 2px;
+    background: linear-gradient(90deg, var(--red), var(--sky));
+    opacity: 0.35;
   }
 
   .summary-block {
+    position: relative;
     background: var(--card);
-    border: 1px solid var(--line);
+    border: 1px solid #DDE2EA;
     border-radius: 4px;
     padding: 24px 28px;
     font-size: 15px;
     line-height: 1.7;
   }
-  .summary-block h3 { font-family: var(--font-display); margin-top: 0; }
+  .summary-block::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--red), var(--sky), var(--red));
+  }
+  .summary-block h3 { font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.02em; margin-top: 0; color: var(--navy); }
   .summary-block ul { padding-left: 20px; }
 
   .card-grid {
@@ -232,7 +337,7 @@
     align-items: center;
     font-size: 14px;
     line-height: 1.45;
-    border: 1px solid var(--line);
+    border: 1px solid #DDE2EA;
   }
 
   .flip-front {
@@ -240,12 +345,15 @@
     font-family: var(--font-display);
     font-weight: 600;
     font-size: 16px;
+    color: var(--navy);
+    border-top: 4px solid var(--sky);
   }
 
   .flip-back {
-    background: var(--green);
-    color: var(--paper);
+    background: var(--navy);
+    color: var(--white);
     transform: rotateY(180deg);
+    border-top: 4px solid var(--red);
   }
 
   .card-index {
@@ -253,21 +361,30 @@
     top: 10px; right: 12px;
     font-family: var(--font-mono);
     font-size: 10px;
-    color: var(--amber);
+    color: var(--red);
   }
 
   .quiz-item {
+    position: relative;
     background: var(--card);
-    border: 1px solid var(--line);
+    border: 1px solid #DDE2EA;
     border-radius: 4px;
     padding: 20px 24px;
     margin-bottom: 12px;
   }
+  .quiz-item::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--red), var(--sky), var(--red));
+  }
 
   .quiz-q {
     font-family: var(--font-display);
+    font-weight: 600;
     font-size: 16px;
     margin-bottom: 12px;
+    color: var(--navy);
   }
 
   .quiz-opt {
@@ -275,7 +392,7 @@
     width: 100%;
     text-align: left;
     background: var(--paper);
-    border: 1px solid var(--line);
+    border: 1px solid #DDE2EA;
     border-radius: 3px;
     padding: 10px 14px;
     margin-bottom: 8px;
@@ -285,9 +402,9 @@
     cursor: pointer;
   }
 
-  .quiz-opt:hover { border-color: var(--green); }
-  .quiz-opt.correct { background: #DDEDE2; border-color: var(--green); font-weight: 600; }
-  .quiz-opt.wrong { background: #F3DCDC; border-color: #A94442; }
+  .quiz-opt:hover { border-color: var(--sky); }
+  .quiz-opt.correct { background: #E1F3E4; border-color: #2E8B45; font-weight: 600; }
+  .quiz-opt.wrong { background: #FBE1E3; border-color: var(--red); }
 
   .quiz-explain {
     font-size: 13px;
@@ -298,8 +415,8 @@
   }
 
   .error-box {
-    background: #F3DCDC;
-    border: 1px solid #A94442;
+    background: #FBE1E3;
+    border: 1px solid var(--red);
     color: #7A2E2E;
     padding: 16px 20px;
     border-radius: 4px;
@@ -315,33 +432,56 @@
 
   .empty-state .glyph {
     font-family: var(--font-display);
-    font-size: 32px;
-    color: var(--amber);
+    font-weight: 700;
+    font-size: 30px;
+    color: var(--red);
     margin-bottom: 8px;
+    letter-spacing: 0.04em;
   }
 
   footer {
-    max-width: 880px;
-    margin: 0 auto;
-    padding: 20px 24px 40px;
+    background: var(--navy);
+    padding: 22px 24px 30px;
     font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--muted);
+    color: #96A0B8;
     text-align: center;
   }
+  footer span { color: var(--gold); }
 
   @media (max-width: 600px) {
-    h1 { font-size: 30px; }
+    h1 { font-size: 38px; }
     .modes { gap: 8px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 3px solid var(--sky); outline-offset: 2px;
   }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="eyebrow">Field notes for the overloaded student</div>
-  <h1>Marginalia</h1>
-  <p>Paste your lecture notes or reading. Get a summary, a deck of flashcards, or a quiz — written in the margins, the way a good study partner would.</p>
+  <div class="header-inner">
+    <svg class="crest" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Potache crest">
+      <defs>
+        <clipPath id="shieldClip">
+          <path d="M50,4 L92,18 L92,58 C92,90 74,106 50,116 C26,106 8,90 8,58 L8,18 Z"/>
+        </clipPath>
+      </defs>
+      <path d="M50,4 L92,18 L92,58 C92,90 74,106 50,116 C26,106 8,90 8,58 L8,18 Z" fill="#0A1A3C" stroke="#FFFFFF" stroke-width="3"/>
+      <g clip-path="url(#shieldClip)">
+        <rect x="0" y="82" width="100" height="4" fill="#0091D5"/>
+        <rect x="0" y="86" width="100" height="34" fill="#DA1128"/>
+      </g>
+      <text x="50" y="19" text-anchor="middle" font-size="13" fill="#FFD447">&#9733;</text>
+      <text x="50" y="70" text-anchor="middle" font-family="'Oswald', sans-serif" font-weight="700" font-size="42" fill="#FFFFFF">P</text>
+    </svg>
+    <h1>Potache</h1>
+    <div class="motto">Allez Potache !</div>
+    <p>Paste your lecture notes or reading. Get a summary, a deck of flashcards, or a quiz — written in the margins, the way a good study partner would.</p>
+  </div>
 </header>
 
 <main>
@@ -355,9 +495,13 @@
 e.g. &quot;Photosynthesis is the process by which green plants, algae, and some bacteria convert light energy into chemical energy stored in glucose. It occurs mainly in the chloroplasts of plant cells, using the pigment chlorophyll...&quot;"></textarea>
 
   <div class="modes">
-    <button class="mode-btn active" data-mode="summary">Summarize</button>
-    <button class="mode-btn" data-mode="flashcards">Flashcards</button>
-    <button class="mode-btn" data-mode="quiz">Quiz me</button>
+    <button class="mode-btn active" data-mode="summary"><span class="num">9</span>Summarize</button>
+    <button class="mode-btn" data-mode="flashcards"><span class="num">10</span>Flashcards</button>
+    <button class="mode-btn" data-mode="quiz"><span class="num">11</span>Quiz me</button>
+    <div class="quiz-count-wrap" id="quizCountWrap">
+      <label for="quizCount">Questions</label>
+      <select id="quizCount"></select>
+    </div>
   </div>
 
   <div class="run-row">
@@ -367,22 +511,35 @@ e.g. &quot;Photosynthesis is the process by which green plants, algae, and some 
 
   <div id="output">
     <div class="empty-state">
-      <div class="glyph">§</div>
+      <div class="glyph">P.</div>
       <div>Your generated study material will appear here.</div>
     </div>
   </div>
 </main>
 
-<footer>marginalia · built with the Groq API (Llama 3.3) · your notes and key never leave your browser except to reach Groq's servers</footer>
+<footer>potache · built with the <span>Groq API</span> (Llama 3.3) · your notes and key never leave your browser except to reach Groq's servers</footer>
 
 <script>
 let currentMode = 'summary';
+
+const quizCountWrap = document.getElementById('quizCountWrap');
+const quizCountSelect = document.getElementById('quizCount');
+
+// Populate the quiz question-count dropdown, 1-20, defaulting to 5.
+for (let i = 1; i <= 20; i++) {
+  const opt = document.createElement('option');
+  opt.value = i;
+  opt.textContent = `${i} question${i === 1 ? '' : 's'}`;
+  if (i === 5) opt.selected = true;
+  quizCountSelect.appendChild(opt);
+}
 
 document.querySelectorAll('.mode-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentMode = btn.dataset.mode;
+    quizCountWrap.classList.toggle('visible', currentMode === 'quiz');
   });
 });
 
@@ -405,7 +562,7 @@ Return ONLY valid JSON, no markdown fences, no preamble, in this exact shape:
 Notes:
 """${notes}"""`,
 
-  quiz: (notes) => `You are a study assistant. Create a 4-question multiple choice quiz from the following notes. Each question has 4 options with exactly one correct answer, plus a short explanation.
+  quiz: (notes, count) => `You are a study assistant. Create a ${count}-question multiple choice quiz from the following notes. Each question has 4 options with exactly one correct answer, plus a short explanation.
 Return ONLY valid JSON, no markdown fences, no preamble, in this exact shape:
 {"questions": [{"question": "...", "options": ["a","b","c","d"], "correct_index": 0, "explanation": "..."}]}
 
@@ -414,7 +571,6 @@ Notes:
 };
 
 async function callModel(prompt, apiKey) {
-  // Groq's API is OpenAI-compatible and free (no credit card required).
   const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -503,7 +659,7 @@ runBtn.addEventListener('click', async () => {
   const notes = document.getElementById('notesInput').value.trim();
 
   if (!apiKey) {
-    output.innerHTML = `<div class="error-box">Add your Anthropic API key above to generate study material.</div>`;
+    output.innerHTML = `<div class="error-box">Add your Groq API key above to generate study material.</div>`;
     return;
   }
   if (!notes) {
@@ -516,7 +672,9 @@ runBtn.addEventListener('click', async () => {
   output.innerHTML = `<div class="empty-state"><div class="glyph">···</div><div>Reading your notes...</div></div>`;
 
   try {
-    const prompt = PROMPTS[currentMode](notes);
+    const prompt = currentMode === 'quiz'
+      ? PROMPTS.quiz(notes, quizCountSelect.value)
+      : PROMPTS[currentMode](notes);
     const data = await callModel(prompt, apiKey);
 
     if (currentMode === 'summary') renderSummary(data);
